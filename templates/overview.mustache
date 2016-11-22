@@ -1,22 +1,64 @@
 
-<div class="reportSection">
-  <h4>Areas</h4>
+<div class="reportSection tableContainer">
+  <h4>Individual Zones</h4>
+    <div class="in-report-header">Overview</div>
     <div class="tab-pane" id="dataTable">
       <table>
         <thead>
           <tr>
             <th>Name</th>
-            <th>Area</th>
+            <th>Area (sq. km)</th>
+            <th>Number of Turbines</th>
+            <th>Average Depth (m)</th>
           </tr>
         </thead>
         <tbody>
-          {{#areas}}
+          {{#sketches}}
             <tr>
               <td>{{NAME}}</td>
-              <td>{{AREA_SQKM}}</td>
+              <td>{{AREA_COV}}</td>
+              <td>{{NUM_TURB}}</td>
+              <td>{{MEAN_DEPTH}}</td>
             </tr>
-          {{/areas}}
+          {{/sketches}}
         </tbody>
       </table>
     </div>
+
+    <div class="in-report-header">Cost</div>
+    <div class="tab-pane" id="dataTable">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Base Construction Cost (M Euros)</th>
+            <th>Cost Increase due to Depth (M Euros)</th>
+            <th>Total Cost (M Euros)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#sketches}}
+            <tr>
+              <td>{{NAME}}</td>
+              <td>{{BASE_CST}}</td>
+              <td>{{DEPTH_ADJ}}</td>
+              <td>{{TOT_CST}}</td>
+            </tr>
+          {{/sketches}}
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<div class="reportSection">
+  <h4>The Whole Plan</h4>
+  <div class="in-report-header">The whole plan has the following details:</div>
+  <ul>
+    <li>The total area covered is <b>{{whole_plan.AREA}}</b> sq. km.</li>
+    <li>It will generate approximately <b>{{whole_plan.PROD}}</b> MW of power.</li>
+    <li>The plan includes <b>{{whole_plan.NUM_TURB}}</b> planned turbines.</li>
+    <li>It will have a total cost of approximately <b>{{whole_plan.TOT_CST}} Million Euros</b></li>
+
+  </ul>
+
 </div>

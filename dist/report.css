@@ -362,9 +362,9 @@
 .reportView .reportSection.tableContainer p {
   padding: 10px;
 }
-.reportView .demo .axis path,
-.reportView .demo .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+.in-report-header {
+  font-weight: bold;
+  padding-left: 10px;
+  padding-top: 8px;
+  padding-bottom: 2px;
 }

@@ -12,19 +12,54 @@ class OverviewTab extends ReportTab
   className: 'overview'
   template: templates.overview
   dependencies: [
-    'XXToolboxHereXX'
+    'NorthSeaModel'
   ]
   render: () ->
+    returnMsg = @recordSet('NorthSeaModel', 'ResultMsg')
+    console.log("msg: ", returnMsg)
+
     # pull data from GP script
-    areas = @recordSet('XXToolboxHereXX', 'XXReturnValsXX').toArray()
+    sketches = @recordSet('NorthSeaModel', 'Sketches').toArray()
+    collection = @recordSet('NorthSeaModel', 'Collection').toArray()
+    if collection?.length > 0
+      whole_plan = collection[0]
+      @updateWholePlan whole_plan
+
+    @updateSketches sketches
     # setup context object with data and render the template from it
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
       attributes: @model.getAttributes()
       admin: @project.isAdmin window.user
-      areas: areas
+      sketches: sketches
+      whole_plan: whole_plan
     
     @$el.html @template.render(context, templates)
 
+  updateWholePlan: (whole_plan) =>
+    whole_plan.AREA = @addCommas Math.ceil(parseFloat(whole_plan.AREA)/1000000.0)
+    whole_plan.NUM_TURB = @addCommas whole_plan.NUM_TURB
+    whole_plan.NUM_SKETCH = whole_plan.NUM_SKETCH-1
+    whole_plan.PROD = @addCommas whole_plan.PROD
+    whole_plan.TOT_CST = @addCommas whole_plan.TOT_CST
+
+  updateSketches: (sketches) =>
+    for sketch in sketches
+      sketch.AREA_COV = @addCommas sketch.AREA_COV
+      sketch.NUM_TURB = @addCommas sketch.NUM_TURB
+      sketch.MEAN_DEPTH = @addCommas sketch.MEAN_DEPTH
+      sketch.BASE_CST = @addCommas sketch.BASE_CST
+      sketch.TOT_CST = @addCommas sketch.TOT_CST
+      sketch.DEPTH_ADJ = @addCommas sketch.DEPTH_ADJ
+
+  addCommas: (num_str) =>
+    num_str += ''
+    x = num_str.split('.')
+    x1 = x[0]
+    x2 = if x.length > 1 then '.' + x[1] else ''
+    rgx = /(\d+)(\d{3})/
+    while rgx.test(x1)
+      x1 = x1.replace(rgx, '$1' + ',' + '$2')
+    return x1 + x2
 module.exports = OverviewTab
