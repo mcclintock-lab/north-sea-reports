@@ -16,7 +16,7 @@ class OverviewTab extends ReportTab
   ]
   render: () ->
     returnMsg = @recordSet('NorthSeaModel', 'ResultMsg')
-    console.log("msg: ", returnMsg)
+    
 
     # pull data from GP script
     sketches = @recordSet('NorthSeaModel', 'Sketches').toArray()
@@ -24,6 +24,8 @@ class OverviewTab extends ReportTab
     if collection?.length > 0
       whole_plan = collection[0]
       @updateWholePlan whole_plan
+
+    installation_cost = @addCommas((whole_plan.NUM_SKETCH)*600)
 
     @updateSketches sketches
     # setup context object with data and render the template from it
@@ -34,6 +36,7 @@ class OverviewTab extends ReportTab
       admin: @project.isAdmin window.user
       sketches: sketches
       whole_plan: whole_plan
+      installation_cost:installation_cost
     
     @$el.html @template.render(context, templates)
 
@@ -42,15 +45,15 @@ class OverviewTab extends ReportTab
     whole_plan.NUM_TURB = @addCommas whole_plan.NUM_TURB
     whole_plan.NUM_SKETCH = whole_plan.NUM_SKETCH-1
     whole_plan.PROD = @addCommas whole_plan.PROD
-    whole_plan.TOT_CST = @addCommas whole_plan.TOT_CST
+    whole_plan.TOT_CST = @addCommas Math.ceil(whole_plan.TOT_CST/10)*10
 
   updateSketches: (sketches) =>
     for sketch in sketches
       sketch.AREA_COV = @addCommas sketch.AREA_COV
       sketch.NUM_TURB = @addCommas sketch.NUM_TURB
       sketch.MEAN_DEPTH = @addCommas sketch.MEAN_DEPTH
-      sketch.BASE_CST = @addCommas sketch.BASE_CST
-      sketch.TOT_CST = @addCommas sketch.TOT_CST
+      sketch.BASE_CST = @addCommas Math.ceil(sketch.BASE_CST/10)*10
+      sketch.TOT_CST = @addCommas Math.ceil(sketch.TOT_CST/10)*10
       sketch.DEPTH_ADJ = @addCommas sketch.DEPTH_ADJ
 
   addCommas: (num_str) =>
@@ -60,6 +63,6 @@ class OverviewTab extends ReportTab
     x2 = if x.length > 1 then '.' + x[1] else ''
     rgx = /(\d+)(\d{3})/
     while rgx.test(x1)
-      x1 = x1.replace(rgx, '$1' + ',' + '$2')
+      x1 = x1.replace(rgx, '$1' + '.' + '$2')
     return x1 + x2
 module.exports = OverviewTab
