@@ -44,7 +44,7 @@ class OverviewTab extends ReportTab
   updateWholePlan: (whole_plan) =>
     whole_plan.AREA = @addCommas Math.ceil(parseFloat(whole_plan.AREA)/1000000.0)
     whole_plan.NUM_TURB = @addCommas whole_plan.NUM_TURB
-    whole_plan.NUM_SKETCH = whole_plan.NUM_SKETCH-1
+    whole_plan.NUM_SKETCH = whole_plan.NUM_SKETCH
     whole_plan.PROD = @addCommas whole_plan.PROD
     whole_plan.DEPTH_CST = @addCommas Math.ceil(whole_plan.DEPTH_CST/10)*10
     whole_plan.TOT_CST = @addCommas Math.ceil(whole_plan.TOT_CST/10)*10
