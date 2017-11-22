@@ -15,5 +15,9 @@
   },
   "scripts": {
     "preinstall": "npm install -g grunt"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bower": "^1.8.2"
   }
 }
