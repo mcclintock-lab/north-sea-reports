@@ -61,6 +61,7 @@ class OverviewTab extends ReportTab
       sketch.BASE_CST = @addCommas Math.ceil(sketch.BASE_CST/10)*10
       sketch.TOT_CST = @addCommas Math.ceil(sketch.TOT_CST/10)*10
       sketch.DEPTH_ADJ = @addCommas sketch.DEPTH_ADJ
+      sketch.DIST_CST = @addCommas Math.ceil(sketch.DIST_CST/10)*10
       
 
     return @addCommas Math.ceil(base_cost/10)*10
